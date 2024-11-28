@@ -1,4 +1,6 @@
-﻿using Login.Models.ViewModels;
+﻿using Login.DAL;
+using Login.Models;
+using Login.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Login.Controllers
@@ -16,13 +18,19 @@ namespace Login.Controllers
         {
             if (ModelState.IsValid)
             {
+                UsuarioDAL dal = new UsuarioDAL();
+                Usuario usuario = dal.GetUsuarioLogin(model.UserName, model.Password);
+
                 // Validar usuario
-                if (model.Username == "admin" && model.Password == "password")
+                if (usuario != null)
                 {
+                    HttpContext.Session.SetString("Username", usuario.UserName);
                     return RedirectToAction("Index", "Home");
                 }
-
-                ModelState.AddModelError(string.Empty, "Usuario o contraseña incorrectos");
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Nombre de usuario o contraseña incorrectos.");
+                }
             }
             return View(model);
         }

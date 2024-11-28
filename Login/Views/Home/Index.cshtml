@@ -1,5 +1,10 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+
+    string mensaje = "Welcome";
+
+    if (ViewBag.Username != null)
+        mensaje = "Welcome " + ViewBag.Username;
 }
 
 <div class="text-center">
